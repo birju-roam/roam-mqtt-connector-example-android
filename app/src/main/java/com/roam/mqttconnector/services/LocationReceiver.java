@@ -45,5 +45,11 @@ public class LocationReceiver extends RoamReceiver {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void mqttLogger(String s, long l) {
+        super.mqttLogger(s, l);
+        Log.e("TAG", "mqttLogger: "+s );
+    }
 }
 

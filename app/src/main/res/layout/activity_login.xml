@@ -14,9 +14,9 @@
         android:layout_marginTop="100dp"
         android:gravity="center"
         android:text="Example App"
-        android:visibility="gone"
         android:textColor="@color/colorBlack"
-        android:textSize="35sp" />
+        android:textSize="35sp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btWithUser"
@@ -27,7 +27,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/bg_button_enable"
-        android:text="@string/login"
+        android:text="@string/with_user"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="16sp" />
@@ -37,12 +37,12 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_below="@+id/btWithUser"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/bg_button_enable"
         android:text="@string/without_user"
-        android:visibility="gone"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="16sp" />
@@ -56,8 +56,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:indeterminateTint="@color/colorProgress"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/snackBar"

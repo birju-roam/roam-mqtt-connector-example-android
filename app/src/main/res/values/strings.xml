@@ -77,7 +77,7 @@
     <string name="time_interval_s">Time interval(s)</string>
     <string name="pub_sub_topic_name">pub/sub topic name</string>
     <string name="url">url</string>
-    <string name="without_user">Without user</string>
-    <string name="with_user">With user</string>
+    <string name="without_user">Login without user</string>
+    <string name="with_user">Login with user</string>
     <string name="login">Login</string>
 </resources>

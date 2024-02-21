@@ -32,12 +32,14 @@ import com.roam.mqttconnector.util.Preferences;
 import com.roam.sdk.Roam;
 
 
+import com.roam.sdk.builder.RoamMqttConnector;
 import com.roam.sdk.builder.RoamPublish;
 import com.roam.sdk.builder.RoamTrackingMode;
 import com.roam.sdk.callback.PublishCallback;
 import com.roam.sdk.callback.RoamCallback;
 import com.roam.sdk.callback.SubscribeCallback;
 import com.roam.sdk.callback.TrackingCallback;
+import com.roam.sdk.enums.ConnectionType;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamUser;
 
@@ -48,10 +50,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Marker currentMarker;
     private Marker marker;
     private CurrentLocationReceiver locationReceiver;
-
-    //battery optimization
-    //stationary location method - 300 secs
-    //tracking mode -  active
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +90,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void checkUserId() {
         if(TextUtils.isEmpty(Preferences.getUserId(this))){
+            //register connector
+            registerMqttConnector();
+
             tracking();
         }else {
+            registerMqttConnector();
             utilityMethods();
         }
     }
@@ -240,7 +242,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 R.drawable.ic_launcher_background,"com.roam.mqttconnector.ui.MapActivity", "com.roam.mqttconnector.services.ImplicitService");
 
         //stationary location update
-        Roam.updateLocationWhenStationary(5);
+        Roam.updateLocationWhenStationary(300);
 
 
         //start tracking
@@ -259,7 +261,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void stopTracking() {
+
+        //clear map
         mMap.clear();
+
+        //deregister custom mqtt connector
+        deregisterMqttConnector();
+
+        //stop tracking
         Roam.stopTracking(new TrackingCallback() {
             @Override
             public void onSuccess(String s) {
@@ -276,6 +285,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void showMsg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void registerMqttConnector(){
+        //8084 - PORT
+        //ConnectionType.SSL - CONNECTION TYPE
+        RoamMqttConnector roamMqttConnector = new RoamMqttConnector.Builder(
+                "HOST-URL",8084, ConnectionType.SSL,
+                "PUBLISH-TOPIC-NAME")
+                .setUserName("USER-NAME")
+                .setPassword("PASSWORD")
+                .build();
+
+        Roam.registerConnector(roamMqttConnector);
+    }
+    private void deregisterMqttConnector(){
+        Roam.deregisterConnector();
     }
 
     public class CurrentLocationReceiver extends BroadcastReceiver {
